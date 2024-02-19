@@ -1,33 +1,55 @@
-def linear_search(arr: list, value) -> int:
-    """
-    Returns position of found value, -1 if not found.
-    """
-    for i, n in enumerate(arr):
+# NOTE: Linear and sequential search are the same
+
+def linear_search(arr: list, value):
+    for n in arr:
         if n == value:
-            return i
-    return -1
+            return True
+    return False
+
+def sequential_search(arr, item):
+    i = 0
+    found = False
+    while i < len(arr) and not found:
+        if arr[i] == item:
+            found = True
+        else:
+            i += 1
+    return found
+
+# NOTE: Binary search requires a sorted input list
 
 
-def binary_search(arr, value) -> int:
-    """
-    Input must be sorted.
-    Returns position of found value, -1 if not found.
-    """
+def binary_search_iterative(arr, value):
     bot = 0
-    top = len(arr)
+    top = len(arr) - 1
     mid = top // 2
-    while bot <= top:
+    found = False
+    while bot <= top and not found:
         mid = (top - bot) // 2
         if value == arr[mid]:
-            return mid
+            found = True
         elif arr[mid] < value:
             bot = mid + 1
         else:
             top = mid - 1
-    return -1
+    return found
+
+
+def binary_search_recursive(arr, item, low, high):
+    if low > high:
+        return False
+    mid = (low + high) // 2
+    if item == arr[mid]:
+        return True
+    elif item < arr[mid]:
+        return binary_search_recursive(arr, item, low, mid - 1)
+    else:
+        return binary_search_recursive(arr, item, mid + 1, high)
 
 
 if __name__ == "__main__":
     test = [1, 2, 3, 4, 5, 6, 7, 8]
-    print(linear_search(test, 2))
-    print(binary_search(test, 1))
+    print(linear_search(test, 4))
+    print(sequential_search(test, 4))
+    print(binary_search_iterative(test, 4))
+    print(binary_search_recursive(test, 4, 0, len(test)-1))
